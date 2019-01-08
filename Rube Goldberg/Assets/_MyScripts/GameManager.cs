@@ -18,18 +18,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static int StarCounter { get; set; }
-    public static int StarCounterMax { get; set; }
     public static bool canPlayBall { get; set; }
     public static int portalCount { get; set; }
 
-    internal static void ResetLevel()
-    {
-        throw new NotImplementedException();
-    }
+    public OVRScreenFade ovrScreenFade;
 
-    internal static void NextLevel()
+    public void LoadNextGame()
     {
-        ResetLevel();
+        ovrScreenFade.FadeOut();
+        //TODO: wait
+        Star.AddNewStar();
+        //TODO: wait
+        ovrScreenFade.FadeIn();
+
     }
 }

@@ -34,9 +34,9 @@ public class GoalStarPortal : MonoBehaviour
     private void GoalFunc()
     {
         if (GameManager.StarCounter == GameManager.StarCounterMax)
-            GameManager.NextLevel();
+            GameManager.Self.LoadNextGame();
         else
-            GameManager.ResetLevel();
+            GameManager.Self.ResetLevel();
     }
 
     private int portalNum;

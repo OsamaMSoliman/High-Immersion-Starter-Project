@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-
     Material m;
     Color originalColor;
     Vector3 originalSize;
@@ -16,16 +13,31 @@ public class Ball : MonoBehaviour
         originalColor = m.color;
         originalSize = transform.localScale;
         rb = GetComponent<Rigidbody>();
+        ovrGrabbable = GetComponent<OVRGrabbable>();
     }
 
-    public bool IsThrowable { get; set; }
-    
+    private OVRGrabbable ovrGrabbable;
+    private bool _isThrowable = true;
+    public bool IsThrowable
+    {
+        get { return _isThrowable; }
+        set
+        {
+            if (ovrGrabbable.isGrabbed)
+            {
+                _isThrowable = value;
+                m.color = _isThrowable ? originalColor : Color.red;
+            }
+        }
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Walkable"))
         {
             StartCoroutine(resetBall());
+            Star.ShowAllStars();
         }
     }
 
