@@ -16,20 +16,34 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        fadeDelay = new WaitForSeconds(ovrScreenFade.fadeTime);
     }
 
-    public static bool canPlayBall { get; set; }
-    public static int portalCount { get; set; }
-
     public OVRScreenFade ovrScreenFade;
+    public SpawningArea spawningArea;
+    private WaitForSeconds fadeDelay;
 
-    public void LoadNextGame()
+    public IEnumerator LoadNextGame()
     {
         ovrScreenFade.FadeOut();
-        //TODO: wait
+        yield return fadeDelay;
         Star.AddNewStar();
-        //TODO: wait
+        Goal.SetNewPosition(spawningArea.GetGoalRandomPlace());
+        Ball.Self.ResetPosition();
         ovrScreenFade.FadeIn();
+    }
 
+    public Vector3 GetStarRandomPlace()
+    {
+        return spawningArea.GetStarRandomPlace();
+    }
+
+    public IEnumerator ResetPlayer(Transform player, Vector3 resetPos)
+    {
+        ovrScreenFade.FadeOut();
+        yield return fadeDelay;
+        player.position = resetPos;
+        Ball.Self.ResetPosition();
+        ovrScreenFade.FadeIn();
     }
 }

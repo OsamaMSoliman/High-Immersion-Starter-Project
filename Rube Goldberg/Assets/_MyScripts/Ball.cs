@@ -6,7 +6,7 @@ public class Ball : MonoBehaviour
     Material m;
     Color originalColor;
     Vector3 originalSize;
-    Rigidbody rb;
+    public Rigidbody rb;
     private void Start()
     {
         m = GetComponent<MeshRenderer>().material;
@@ -34,7 +34,7 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Walkable"))
+        if (collision.transform.CompareTag("Walkable") && !TouchedGoal)
         {
             StartCoroutine(resetBall());
             Star.ShowAllStars();
@@ -66,5 +66,25 @@ public class Ball : MonoBehaviour
             yield return delay;
 
         }
+    }
+
+
+    public static Ball Self;
+    private void Awake()
+    {
+        if (Self == null)
+            Self = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    public bool TouchedGoal { get; set; }
+    public void ResetPosition()
+    {
+        transform.position = resetPosition.position;
+        TouchedGoal = false;
     }
 }
